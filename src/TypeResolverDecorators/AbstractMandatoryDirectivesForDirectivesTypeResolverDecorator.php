@@ -1,0 +1,10 @@
+<?php
+namespace PoP\MandatoryDirectivesByConfiguration\TypeResolverDecorators;
+
+use PoP\ComponentModel\TypeResolverDecorators\AbstractTypeResolverDecorator;
+use PoP\MandatoryDirectivesByConfiguration\TypeResolverDecorators\ConfigurableMandatoryDirectivesForDirectivesTypeResolverDecoratorTrait;
+
+abstract class AbstractMandatoryDirectivesForDirectivesTypeResolverDecorator extends AbstractTypeResolverDecorator
+{
+    use ConfigurableMandatoryDirectivesForDirectivesTypeResolverDecoratorTrait;
+}
