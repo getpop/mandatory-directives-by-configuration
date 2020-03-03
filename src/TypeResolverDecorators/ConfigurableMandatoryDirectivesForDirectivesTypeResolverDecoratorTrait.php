@@ -1,12 +1,25 @@
 <?php
 namespace PoP\MandatoryDirectivesByConfiguration\TypeResolverDecorators;
 
-use PoP\MandatoryDirectivesByConfiguration\ConfigurationEntries\ConfigurableMandatoryDirectivesForDirectivesTrait;
+use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use PoP\MandatoryDirectivesByConfiguration\ConfigurationEntries\ConfigurableMandatoryDirectivesForDirectivesTrait;
 
 trait ConfigurableMandatoryDirectivesForDirectivesTypeResolverDecoratorTrait
 {
     use ConfigurableMandatoryDirectivesForDirectivesTrait;
+
+    /**
+     * By default, it is valid everywhere
+     *
+     * @return array
+     */
+    public static function getClassesToAttachTo(): array
+    {
+        return [
+            AbstractTypeResolver::class,
+        ];
+    }
 
     abstract protected function getMandatoryDirectives($entryValue = null): array;
 
