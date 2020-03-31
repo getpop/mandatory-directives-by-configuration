@@ -124,10 +124,16 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
         } while ($directiveResolverClass != null);
         $entries = $this->getEntries();
         foreach ($entries as $entry) {
+            /**
+             * If there is any entry for this directive, then continue the normal execution: that of the parent
+             */
             if (in_array($entry[0], $ancestorDirectiveResolverClasses)) {
                 return parent::maybeFilterDirectiveName($include, $typeResolver, $directiveResolver, $directiveName);
             }
         }
+        /**
+         * If there are no entries, then exit
+         */
         return $include;
     }
 }
