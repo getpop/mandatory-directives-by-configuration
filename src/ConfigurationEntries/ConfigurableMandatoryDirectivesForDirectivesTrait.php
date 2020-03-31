@@ -1,7 +1,10 @@
 <?php
 namespace PoP\MandatoryDirectivesByConfiguration\ConfigurationEntries;
 
+use PoP\AccessControl\Environment;
+use PoP\AccessControl\Schema\SchemaModes;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use PoP\ComponentModel\DirectiveResolvers\DirectiveResolverInterface;
 
 trait ConfigurableMandatoryDirectivesForDirectivesTrait
 {
@@ -61,22 +64,65 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
     /**
      * Filter all the entries from the list which apply to the passed typeResolver and fieldName
      *
-     * @param boolean $include
      * @param array $entryList
-     * @param TypeResolverInterface $typeResolver
-     * @param string $fieldName
-     * @return boolean
+     * @param string|null $value
+     * @return array
      */
     final protected function getMatchingEntries(array $entryList, ?string $value): array
     {
         if ($value) {
+            /**
+             * If enabling individual control over public/private schema modes, then we must also check
+             * that this field has the required mode.
+             * If the schema mode was not defined in the entry, then this field is valid if the default
+             * schema mode is the same required one
+             */
+            $enableIndividualControl = $matchNullControlEntry = false;
+            if (Environment::enableIndividualControlForPublicPrivateSchemaMode()) {
+                $enableIndividualControl = true;
+                $individualControlSchemaMode = $this->getSchemaMode();
+                $matchNullControlEntry =
+                    (Environment::usePrivateSchemaMode() && $individualControlSchemaMode == SchemaModes::PRIVATE_SCHEMA_MODE) ||
+                    (!Environment::usePrivateSchemaMode() && $individualControlSchemaMode == SchemaModes::PUBLIC_SCHEMA_MODE);
+            }
             return array_filter(
                 $entryList,
-                function($entry) use($value) {
-                    return $entry[1] == $value;
+                function($entry) use($value, $enableIndividualControl, $individualControlSchemaMode, $matchNullControlEntry) {
+                    return $entry[1] == $value &&
+                    (
+                        !$enableIndividualControl ||
+                        $entry[2] == $individualControlSchemaMode ||
+                        (
+                            is_null($entry[2]) &&
+                            $matchNullControlEntry
+                        )
+                    );
                 }
             );
         }
         return $entryList;
+    }
+
+    abstract protected function getSchemaMode(): string;
+
+    public function maybeFilterDirectiveName(bool $include, TypeResolverInterface $typeResolver, DirectiveResolverInterface $directiveResolver, string $directiveName): bool
+    {
+        if (!Environment::enableIndividualControlForPublicPrivateSchemaMode()) {
+            return parent::maybeFilterDirectiveName($include, $typeResolver, $directiveResolver, $directiveName);
+        }
+
+        $ancestorDirectiveResolverClasses = [];
+        $directiveResolverClass = get_class($directiveResolver);
+        do {
+            $ancestorDirectiveResolverClasses[] = $directiveResolverClass;
+            $directiveResolverClass = get_parent_class($directiveResolverClass);
+        } while ($directiveResolverClass != null);
+        $entries = $this->getEntries();
+        foreach ($entries as $entry) {
+            if (in_array($entry[0], $ancestorDirectiveResolverClasses)) {
+                return parent::maybeFilterDirectiveName($include, $typeResolver, $directiveResolver, $directiveName);
+            }
+        }
+        return $include;
     }
 }
