@@ -107,6 +107,9 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
 
     public function maybeFilterDirectiveName(bool $include, TypeResolverInterface $typeResolver, DirectiveResolverInterface $directiveResolver, string $directiveName): bool
     {
+        /**
+         * If not enabling individual control, then the parent case already deals with the general case
+         */
         if (!Environment::enableIndividualControlForPublicPrivateSchemaMode()) {
             return parent::maybeFilterDirectiveName($include, $typeResolver, $directiveResolver, $directiveName);
         }

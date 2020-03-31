@@ -95,13 +95,21 @@ trait ConfigurableMandatoryDirectivesForFieldsTrait
 
     public function maybeFilterFieldName(bool $include, TypeResolverInterface $typeResolver, FieldResolverInterface $fieldResolver, string $fieldName): bool
     {
+        /**
+         * If enabling individual control, then check if there is any entry for this field and schema mode
+         */
         if (Environment::enableIndividualControlForPublicPrivateSchemaMode()) {
+            /**
+             * If there are no entries, then exit by returning the original hook value
+             */
             if (empty($this->getEntries($typeResolver, $fieldName))) {
                 return $include;
             }
         }
 
-        // Check if to remove the field
+        /**
+         * The parent case deals with the general case
+         */
         return parent::maybeFilterFieldName($include, $typeResolver, $fieldResolver, $fieldName);
     }
 }
