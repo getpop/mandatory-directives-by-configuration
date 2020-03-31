@@ -111,6 +111,11 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
             return parent::maybeFilterDirectiveName($include, $typeResolver, $directiveResolver, $directiveName);
         }
 
+        /**
+         * On the entries we will resolve either the class of the directive resolver, or any of its ancestors
+         * If there is any entry for this directive resolver, after filtering, then enable it
+         * Otherwise, exit by returning the original hook value
+         */
         $ancestorDirectiveResolverClasses = [];
         $directiveResolverClass = get_class($directiveResolver);
         do {
