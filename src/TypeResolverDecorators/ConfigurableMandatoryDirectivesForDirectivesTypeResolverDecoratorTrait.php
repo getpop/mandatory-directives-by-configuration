@@ -10,7 +10,7 @@ trait ConfigurableMandatoryDirectivesForDirectivesTypeResolverDecoratorTrait
 
     abstract protected function getMandatoryDirectives($entryValue = null): array;
 
-    public function getMandatoryDirectivesForDirectives(TypeResolverInterface $typeResolver): array
+    public function getPrecedingMandatoryDirectivesForDirectives(TypeResolverInterface $typeResolver): array
     {
         $mandatoryDirectivesForDirectives = [];
         foreach ($this->getEntries() as $entry) {
