@@ -20,13 +20,11 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
     final protected function getEntries(): array
     {
         $entryList = $this->getConfigurationEntries();
-        if ($requiredEntryValue = $this->getRequiredEntryValue()) {
-            return $this->getMatchingEntries(
-                $entryList,
-                $requiredEntryValue
-            );
-        }
-        return $entryList;
+        $requiredEntryValue = $this->getRequiredEntryValue();
+        return $this->getMatchingEntries(
+            $entryList,
+            $requiredEntryValue
+        );
     }
 
     /**
