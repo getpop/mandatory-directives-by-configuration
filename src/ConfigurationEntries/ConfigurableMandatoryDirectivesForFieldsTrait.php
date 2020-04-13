@@ -20,12 +20,12 @@ trait ConfigurableMandatoryDirectivesForFieldsTrait
     protected function getFieldNames(): array
     {
         return array_map(
-            function($entry) {
+            function ($entry) {
                 // The tuple has format [typeResolverClass, fieldName] or [typeResolverClass, fieldName, $role] or [typeResolverClass, fieldName, $capability]
                 // So, in position [1], will always be the $fieldName
                 return $entry[1];
             },
-           static::getConfigurationEntries()
+            static::getConfigurationEntries()
         );
     }
 
