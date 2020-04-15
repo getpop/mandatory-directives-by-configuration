@@ -15,7 +15,8 @@ trait ConfigurableMandatoryDirectivesForFieldsTypeResolverDecoratorTrait
     {
         return array_map(
             function ($entry) {
-                // The tuple has format [typeResolverClass, fieldName] or [typeResolverClass, fieldName, $role] or [typeResolverClass, fieldName, $capability]
+                // The tuple has format [typeResolverClass, fieldName] or [typeResolverClass, fieldName, $role]
+                // or [typeResolverClass, fieldName, $capability]
                 // So, in position [0], will always be the $typeResolverClass
                 return $entry[0];
             },

@@ -24,7 +24,8 @@ trait ConfigurableMandatoryDirectivesForFieldsTrait
     {
         return array_map(
             function ($entry) {
-                // The tuple has format [typeResolverClass, fieldName] or [typeResolverClass, fieldName, $role] or [typeResolverClass, fieldName, $capability]
+                // The tuple has format [typeResolverClass, fieldName] or [typeResolverClass, fieldName, $role]
+                // or [typeResolverClass, fieldName, $capability]
                 // So, in position [1], will always be the $fieldName
                 return $entry[1];
             },
@@ -55,8 +56,11 @@ trait ConfigurableMandatoryDirectivesForFieldsTrait
      * @param string $fieldName
      * @return boolean
      */
-    final protected function getMatchingEntries(array $entryList, TypeResolverInterface $typeResolver, string $fieldName): array
-    {
+    final protected function getMatchingEntries(
+        array $entryList,
+        TypeResolverInterface $typeResolver,
+        string $fieldName
+    ): array {
         $typeResolverClass = get_class($typeResolver);
         return array_filter(
             $entryList,
