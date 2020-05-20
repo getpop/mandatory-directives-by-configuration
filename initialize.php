@@ -1,2 +1,2 @@
 <?php
-\PoP\MandatoryDirectivesByConfiguration\Component::init();
+//\PoP\MandatoryDirectivesByConfiguration\Component::initialize();
