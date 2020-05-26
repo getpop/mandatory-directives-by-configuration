@@ -25,7 +25,9 @@ composer require getpop/mandatory-directives-by-configuration
 Initialize the component:
 
 ``` php
-\PoP\MandatoryDirectivesByConfiguration\Component::initialize();
+\PoP\Root\ComponentLoader::initializeComponents([
+    \PoP\MandatoryDirectivesByConfiguration\Component::class,
+]);
 ```
 
 ## Standards
