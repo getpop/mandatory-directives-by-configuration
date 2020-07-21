@@ -15,9 +15,10 @@ trait ConfigurableMandatoryDirectivesForFieldsTypeResolverDecoratorTrait
     {
         return array_map(
             function ($entry) {
-                // The tuple has format [typeResolverClass, fieldName] or [typeResolverClass, fieldName, $role]
-                // or [typeResolverClass, fieldName, $capability]
-                // So, in position [0], will always be the $typeResolverClass
+                // The tuple has format [typeOrFieldInterfaceResolverClass, fieldName]
+                // or [typeOrFieldInterfaceResolverClass, fieldName, $role]
+                // or [typeOrFieldInterfaceResolverClass, fieldName, $capability]
+                // So, in position [0], will always be the $typeOrFieldInterfaceResolverClass
                 return $entry[0];
             },
             static::getConfigurationEntries()
@@ -29,9 +30,21 @@ trait ConfigurableMandatoryDirectivesForFieldsTypeResolverDecoratorTrait
     public function getMandatoryDirectivesForFields(TypeResolverInterface $typeResolver): array
     {
         $mandatoryDirectivesForFields = [];
+        $fieldInterfaceResolverClasses = $typeResolver->getAllImplementedInterfaceClasses();
         // Obtain all capabilities allowed for the current combination of typeResolver/fieldName
         foreach ($this->getFieldNames() as $fieldName) {
-            foreach ($this->getEntries($typeResolver, [], $fieldName) as $entry) {
+            // Calculate all the interfaces that define this fieldName
+            $fieldInterfaceResolverClassesForField = array_values(array_filter(
+                $fieldInterfaceResolverClasses,
+                function ($fieldInterfaceResolverClass) use ($fieldName): bool {
+                    return in_array($fieldName, $fieldInterfaceResolverClass::getFieldNamesToImplement());
+                }
+            ));
+            foreach ($this->getEntries(
+                $typeResolver,
+                $fieldInterfaceResolverClassesForField,
+                $fieldName
+            ) as $entry) {
                 $entryValue = $entry[2];
                 if ($this->removeFieldNameBasedOnMatchingEntryValue($entryValue)) {
                     $mandatoryDirectivesForFields[$fieldName] = $this->getMandatoryDirectives($entryValue);
