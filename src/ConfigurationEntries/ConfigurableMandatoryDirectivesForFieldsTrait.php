@@ -38,11 +38,15 @@ trait ConfigurableMandatoryDirectivesForFieldsTrait
      *
      * @return array
      */
-    final protected function getEntries(TypeResolverInterface $typeResolver, string $fieldName): array
-    {
+    final protected function getEntries(
+        TypeResolverInterface $typeResolver,
+        array $fieldInterfaceResolverClasses,
+        string $fieldName
+    ): array {
         return $this->getMatchingEntries(
             static::getConfigurationEntries(),
             $typeResolver,
+            $fieldInterfaceResolverClasses,
             $fieldName
         );
     }
@@ -59,13 +63,17 @@ trait ConfigurableMandatoryDirectivesForFieldsTrait
     final protected function getMatchingEntries(
         array $entryList,
         TypeResolverInterface $typeResolver,
+        array $fieldInterfaceResolverClasses,
         string $fieldName
     ): array {
         $typeResolverClass = get_class($typeResolver);
         return array_filter(
             $entryList,
-            function ($entry) use ($typeResolverClass, $fieldName) {
-                return $entry[0] == $typeResolverClass && $entry[1] == $fieldName;
+            function ($entry) use ($typeResolverClass, $fieldInterfaceResolverClasses, $fieldName): bool {
+                return (
+                    $entry[0] == $typeResolverClass
+                    || in_array($entry[0], $fieldInterfaceResolverClasses)
+                ) && $entry[1] == $fieldName;
             }
         );
     }
