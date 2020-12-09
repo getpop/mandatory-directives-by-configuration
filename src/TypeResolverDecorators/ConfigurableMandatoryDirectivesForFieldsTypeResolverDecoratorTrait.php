@@ -45,7 +45,7 @@ trait ConfigurableMandatoryDirectivesForFieldsTypeResolverDecoratorTrait
                 $fieldInterfaceResolverClassesForField,
                 $fieldName
             ) as $entry) {
-                $entryValue = $entry[2];
+                $entryValue = $entry[2] ?? null;
                 if ($this->removeFieldNameBasedOnMatchingEntryValue($entryValue)) {
                     $mandatoryDirectivesForFields[$fieldName] = $this->getMandatoryDirectives($entryValue);
                 }
