@@ -72,7 +72,7 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
             return array_filter(
                 $entryList,
                 function ($entry) use ($value) {
-                    return $entry[1] == $value;
+                    return ($entry[1] ?? null) == $value;
                 }
             );
         }

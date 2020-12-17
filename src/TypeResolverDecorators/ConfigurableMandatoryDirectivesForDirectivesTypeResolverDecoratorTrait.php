@@ -18,7 +18,7 @@ trait ConfigurableMandatoryDirectivesForDirectivesTypeResolverDecoratorTrait
         $mandatoryDirectivesForDirectives = [];
         foreach ($this->getEntries() as $entry) {
             $directiveResolverClass = $entry[0];
-            $entryValue = $entry[1]; // this might be any value (string, array, etc) or, if not defined, null
+            $entryValue = $entry[1] ?? null; // this might be any value (string, array, etc) or, if not defined, null
             $directiveName = $directiveResolverClass::getDirectiveName();
             $mandatoryDirectivesForDirectives[$directiveName] = $this->getMandatoryDirectives($entryValue);
         }
