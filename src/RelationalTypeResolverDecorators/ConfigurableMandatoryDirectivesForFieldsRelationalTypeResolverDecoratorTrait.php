@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PoP\MandatoryDirectivesByConfiguration\TypeResolverDecorators;
+namespace PoP\MandatoryDirectivesByConfiguration\RelationalTypeResolverDecorators;
 
 use PoP\ComponentModel\TypeResolvers\InterfaceType\InterfaceTypeResolverInterface;
 use PoP\ComponentModel\TypeResolvers\ObjectType\ObjectTypeResolverInterface;
-use PoP\ComponentModel\TypeResolvers\RelationalTypeResolverInterface;
 use PoP\MandatoryDirectivesByConfiguration\ConfigurationEntries\ConfigurableMandatoryDirectivesForFieldsTrait;
 
-trait ConfigurableMandatoryDirectivesForFieldsTypeResolverDecoratorTrait
+trait ConfigurableMandatoryDirectivesForFieldsRelationalTypeResolverDecoratorTrait
 {
     use ConfigurableMandatoryDirectivesForFieldsTrait;
 

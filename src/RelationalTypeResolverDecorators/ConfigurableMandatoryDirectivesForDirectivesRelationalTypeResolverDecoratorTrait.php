@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PoP\MandatoryDirectivesByConfiguration\TypeResolverDecorators;
+namespace PoP\MandatoryDirectivesByConfiguration\RelationalTypeResolverDecorators;
 
 use PoP\ComponentModel\DirectiveResolvers\DirectiveResolverInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\TypeResolvers\RelationalTypeResolverInterface;
 use PoP\MandatoryDirectivesByConfiguration\ConfigurationEntries\ConfigurableMandatoryDirectivesForDirectivesTrait;
 
-trait ConfigurableMandatoryDirectivesForDirectivesTypeResolverDecoratorTrait
+trait ConfigurableMandatoryDirectivesForDirectivesRelationalTypeResolverDecoratorTrait
 {
     use ConfigurableMandatoryDirectivesForDirectivesTrait;
 
