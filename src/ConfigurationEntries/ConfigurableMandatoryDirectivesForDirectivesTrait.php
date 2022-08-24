@@ -13,11 +13,15 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
 
     /**
      * Configuration entries
+     *
+     * @return array<mixed[]>
      */
     abstract protected function getConfigurationEntries(): array;
 
     /**
      * Configuration entries
+     *
+     * @return array<mixed[]>
      */
     final protected function getEntries(): array
     {
@@ -45,7 +49,10 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
     final protected function getDirectiveResolvers(): array
     {
         return array_map(
-            $this->getInstanceManager()->getInstance(...),
+            function (string $directiveResolverClass): DirectiveResolverInterface {
+                /** @var DirectiveResolverInterface */
+                return $this->getInstanceManager()->getInstance($directiveResolverClass);
+            },
             $this->getDirectiveResolverClasses()
         );
     }
@@ -53,7 +60,7 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
     /**
      * Remove directiveName "translate" if the user is not logged in
      *
-     * @return string[]
+     * @return array<class-string<DirectiveResolverInterface>>
      */
     protected function getDirectiveResolverClasses(): array
     {
@@ -66,6 +73,9 @@ trait ConfigurableMandatoryDirectivesForDirectivesTrait
 
     /**
      * Filter all the entries from the list which apply to the passed typeResolver and fieldName
+     *
+     * @return array<mixed[]>
+     * @param array<mixed[]> $entryList
      */
     final protected function getMatchingEntries(array $entryList, ?string $value): array
     {
